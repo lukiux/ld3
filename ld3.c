@@ -16,11 +16,14 @@ int checkIfDynamicLibrary(char *name){
         //dlclose(handle);
         //Dar neveikia
                 void *d1;
+                char buf[100];
+                sprintf(buf,"./%s",name);
                 d1 = dlopen(name, RTLD_LAZY | RTLD_LOCAL);
                 if( d1 != NULL ){
                         return 1;
                 }
-return 1;
+puts(dlerror());
+return 0;
 }
 
 int checkIfElf(char *name){
