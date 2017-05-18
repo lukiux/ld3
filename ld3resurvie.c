@@ -15,14 +15,21 @@ void listdir(const char *name, int level)
         DIR *dir;
         struct dirent *entry;
 
-        if(!(dir = opendir(name)))
-                return;
+        dir = opendir(name);
+        if(dir==NULL){
+                perror("opendir() failed");
+                exit(1);
+        }
         if(!(entry = readdir(dir)))
                 return;
         do {
                         int status;
                         struct stat buffer;
                         status = stat(entry->d_name, &buffer);
+                        if(status==-1){
+                                 perror("stat() failed");
+                                 exit(1);
+                        }
                         if(S_ISREG(buffer.st_mode)){
                          if(buffer.st_size >= 1048576)
                                         chmod(entry->d_name,S_IRWXU);
